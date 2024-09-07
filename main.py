@@ -4,22 +4,40 @@ import os
 def calculator():
     memory = 0.0
     result = 0.0
+    digits = 3
     memory_operations = ["ms", "m+", "m-"]
 
     while True:
         while True:
-            main_prompt = input("1 - Calculate a number, 2 - View history: ")
-            if main_prompt == "1":
-                break
-            elif main_prompt == "2":
-                with open("history.txt", "r") as file:
-                    print("Your history:\n" + file.read())
-                continue
-            else:
-                print("Invalid input")
-                continue
+            main_prompt = input("1 - Calculate a number, 2 - View history, 3 - Additional settings: ")
+            match main_prompt:
+                case "1":
+                    break
+                case "2":
+                    with open("history.txt", "r") as file:
+                        print("Your history:\n" + file.read())
+                    continue
+                case "3":
+                    settings_prompt = input("1 - Change the amount of digits after a dot in a number, 2 - Clear history: ")
+                    if settings_prompt == "1":
+                        while True:
+                            digits_prompt = input("Enter the amount of digits: ")
+                            try:
+                                digits = int(digits_prompt)
+                                print("Settings changed successfully")
+                                break
+                            except ValueError:
+                                print("Please enter a number")
+                    elif settings_prompt == "2":
+                        with open("history.txt", "w"):
+                            pass
+                        print("History cleared successfully")
+                    else:
+                        print("Invalid input")
+                case _:
+                    print("Invalid input")
 
-        num1 = validate_num(memory, "Enter first number (or MR / MC): ")
+        num1 = round(validate_num(memory, "Enter first number (or MR / MC): "), digits)
 
         operator = validate_operator()
         if operator == "ms":
@@ -27,12 +45,12 @@ def calculator():
             print("Memory value stored! Current value: " + str(memory))
             continue
 
-        num2 = validate_num(memory, "Enter second number (or MR / MC): ")
+        num2 = round(validate_num(memory, "Enter second number (or MR / MC): "), digits)
 
         if operator == "/" and num2 == 0:
             print("Error: cannot divide by zero")
         else:
-            result = calculate(num1, num2, operator)
+            result = round(calculate(num1, num2, operator), digits)
             print("Result : " + str(result))
 
         history_write(str(num1) + " " + operator + " " + str(num2) + " = " + str(result))
