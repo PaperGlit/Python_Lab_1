@@ -121,7 +121,7 @@ def history_write(value):
         else:
             new_history = value + "\n" + history
     with open("history.txt", "w") as history_file:
-        f.write(new_history)
+        history_file.write(new_history)
 
 
 if not os.path.exists("history.txt"):
