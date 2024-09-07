@@ -8,18 +8,47 @@ def calculator():
     memory_operations = ["ms", "m+", "m-"]
 
     while True:
-        while True:
-            main_prompt = input("1 - Calculate a number, 2 - View history, 3 - Additional settings: ")
-            match main_prompt:
-                case "1":
-                    break
-                case "2":
-                    with open("history.txt", "r") as file:
-                        print("Your history:\n" + file.read())
+        main_prompt = input("1 - Calculate a number, 2 - View history, 3 - Additional settings: ")
+
+        match main_prompt:
+            case "1":
+                num1 = round(validate_num(memory, "Enter first number (or MR / MC): "), digits)
+
+                operator = validate_operator()
+                if operator == "ms":
+                    memory = num1
+                    print("Memory value stored! Current value: " + str(memory))
                     continue
-                case "3":
-                    settings_prompt = input("1 - Change the amount of digits after a dot in a number, 2 - Clear history: ")
-                    if settings_prompt == "1":
+
+                num2 = round(validate_num(memory, "Enter second number (or MR / MC): "), digits)
+
+                if operator == "/" and num2 == 0:
+                    print("Error: cannot divide by zero")
+                else:
+                    result = round(calculate(num1, num2, operator), digits)
+                    print("Result : " + str(result))
+
+                history_write(str(num1) + " " + operator + " " + str(num2) + " = " + str(result))
+                print("The operation was saved into history")
+
+                try_again = input("Would you like to try again? (Y / N) // Store memory? (MS / M+ / M-): ").lower()
+                if try_again in memory_operations:
+                    memory = validate_memory(try_again, memory, result)
+                elif try_again == "y":
+                    result = 0.0
+                    continue
+                else:
+                    break
+
+            case "2":
+                with open("history.txt", "r") as file:
+                    print("Your history:\n" + file.read())
+
+            case "3":
+                settings_prompt = input("1 - Change the amount of digits after a dot in a number, 2 - Clear history: ")
+
+                match settings_prompt:
+                    case "1":
                         while True:
                             digits_prompt = input("Enter the amount of digits: ")
                             try:
@@ -28,47 +57,23 @@ def calculator():
                                 break
                             except ValueError:
                                 print("Please enter a number")
-                    elif settings_prompt == "2":
+
+                    case "2":
                         with open("history.txt", "w"):
                             pass
                         print("History cleared successfully")
-                    else:
+
+                    case _:
                         print("Invalid input")
-                case _:
-                    print("Invalid input")
 
-        num1 = round(validate_num(memory, "Enter first number (or MR / MC): "), digits)
-
-        operator = validate_operator()
-        if operator == "ms":
-            memory = num1
-            print("Memory value stored! Current value: " + str(memory))
-            continue
-
-        num2 = round(validate_num(memory, "Enter second number (or MR / MC): "), digits)
-
-        if operator == "/" and num2 == 0:
-            print("Error: cannot divide by zero")
-        else:
-            result = round(calculate(num1, num2, operator), digits)
-            print("Result : " + str(result))
-
-        history_write(str(num1) + " " + operator + " " + str(num2) + " = " + str(result))
-        print("The operation was saved into history")
-
-        try_again = input("Would you like to try again? (Y / N) // Store memory? (MS / M+ / M-): ").lower()
-        if try_again in memory_operations:
-            memory = validate_memory(try_again, memory, result)
-        elif try_again == "y":
-            result = 0.0
-            continue
-        else:
-            break
+            case _:
+                print("Invalid input")
 
 
 def validate_num(memory, num_prompt):
     while True:
         value = (input(num_prompt)).lower()
+
         if value.lower() == "mr":
             print("Recovered value: " + str(memory))
             return memory
@@ -84,11 +89,10 @@ def validate_num(memory, num_prompt):
 
 def validate_operator():
     operands = ["+", "-", "*", "/", "^", "root", "%"]
+
     while True:
         operator = (input("Enter operator (or MS): ")).lower()
-        if operator == "ms":
-            return operator
-        elif operator in operands:
+        if operator == "ms" or operator in operands:
             return operator
         else:
             print("Please enter a valid operator")
@@ -143,6 +147,6 @@ def history_write(value):
 
 
 if not os.path.exists("history.txt"):
-    with open("history.txt", "x") as f:
+    with open("history.txt", "x"):
         pass
 calculator()
