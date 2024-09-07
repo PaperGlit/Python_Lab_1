@@ -1,8 +1,24 @@
+import os
+
+
 def calculator():
     memory = 0.0
     result = 0.0
     memory_operations = ["ms", "m+", "m-"]
+
     while True:
+        while True:
+            main_prompt = input("1 - Calculate a number, 2 - View history: ")
+            if main_prompt == "1":
+                break
+            elif main_prompt == "2":
+                with open("history.txt", "r") as file:
+                    print("Your history:\n" + file.read())
+                continue
+            else:
+                print("Invalid input")
+                continue
+
         num1 = validate_num(memory, "Enter first number (or MR / MC): ")
 
         operator = validate_operator()
@@ -19,6 +35,9 @@ def calculator():
             result = calculate(num1, num2, operator)
             print("Result : " + str(result))
 
+        history_write(str(num1) + " " + operator + " " + str(num2) + " = " + str(result))
+        print("The operation was saved into history")
+
         try_again = input("Would you like to try again? (Y / N) // Store memory? (MS / M+ / M-): ").lower()
         if try_again in memory_operations:
             memory = validate_memory(try_again, memory, result)
@@ -29,9 +48,9 @@ def calculator():
             break
 
 
-def validate_num(memory, prompt):
+def validate_num(memory, num_prompt):
     while True:
-        value = (input(prompt)).lower()
+        value = (input(num_prompt)).lower()
         if value.lower() == "mr":
             print("Recovered value: " + str(memory))
             return memory
@@ -94,4 +113,18 @@ def calculate(num1, num2, operator):
             return "Error occurred during calculation"
 
 
+def history_write(value):
+    with open("history.txt", "r") as f:
+        history = f.read()
+        if history == "":
+            new_history = value
+        else:
+            new_history = value + "\n" + history
+    with open("history.txt", "w") as f:
+        f.write(new_history)
+
+
+if not os.path.exists("history.txt"):
+    with open("history.txt", "x") as f:
+        pass
 calculator()
