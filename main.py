@@ -114,13 +114,13 @@ def calculate(num1, num2, operator):
 
 
 def history_write(value):
-    with open("history.txt", "r") as f:
-        history = f.read()
+    with open("history.txt", "r") as history_file:
+        history = history_file.read()
         if history == "":
             new_history = value
         else:
             new_history = value + "\n" + history
-    with open("history.txt", "w") as f:
+    with open("history.txt", "w") as history_file:
         f.write(new_history)
 
 
