@@ -67,7 +67,7 @@ def calculator():
                         print("Invalid input")
 
             case _:
-                print("Invalid input")
+                break
 
 
 def validate_num(memory, num_prompt):
@@ -104,11 +104,13 @@ def validate_memory(value, memory, num):
             memory = num
             print("Memory value stored! Current value: " + str(memory))
         case "m+":
+            history_write(str(memory) + " + " + str(num) + " = " + str(memory + num))
             memory += num
-            print("Memory value updated! Current value: " + str(memory))
+            print("Memory value updated and saved into history! Current value: " + str(memory))
         case "m-":
+            history_write(str(memory) + " - " + str(num) + " = " + str(memory - num))
             memory -= num
-            print("Memory value updated! Current value: " + str(memory))
+            print("Memory value updated and saved into history! Current value: " + str(memory))
         case _:
             print("Error occurred during memory validation")
             return 0.0
