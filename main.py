@@ -31,7 +31,7 @@ def calculator():
                 history_write(str(num1) + " " + operator + " " + str(num2) + " = " + str(result))
                 print("The operation was saved into history")
 
-                try_again = input("Would you like to try again? (Y / N) // Store memory? (MS / M+ / M-): ").lower()
+                try_again = input("Would you like to try again? (Y / N) // Store a value into memory? (MS / M+ / M-): ").lower()
                 if try_again in memory_operations:
                     memory = validate_memory(try_again, memory, result)
                 elif try_again == "y":
