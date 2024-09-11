@@ -6,6 +6,7 @@ def calculator():
     result = 0.0
     digits = 3
     memory_operations = ["ms", "m+", "m-"]
+    operands = ["+", "-", "*", "/", "^", "root", "%"]
 
     while True:
         main_prompt = input("1 - Calculate a number, 2 - View history, 3 - Additional settings: ")
@@ -14,10 +15,9 @@ def calculator():
             case "1":
                 num1 = round(validate_num(memory, "Enter first number (or MR / MC): "), digits)
 
-                operator = validate_operator()
-                if operator == "ms":
-                    memory = num1
-                    print("Memory value stored! Current value: " + str(memory))
+                operator = validate_operator(operands, memory_operations)
+                if operator in memory_operations:
+                    memory = validate_memory(operator, memory, num1)
                     continue
 
                 num2 = round(validate_num(memory, "Enter second number (or MR / MC): "), digits)
@@ -87,19 +87,17 @@ def validate_num(memory, num_prompt):
                 print("Please enter a valid number / memory operation")
 
 
-def validate_operator():
-    operands = ["+", "-", "*", "/", "^", "root", "%"]
-
+def validate_operator(operands, memory_operations):
     while True:
-        operator = (input("Enter operator (or MS): ")).lower()
-        if operator == "ms" or operator in operands:
+        operator = (input("Enter operator (or MS / M+ / M-): ")).lower()
+        if operator in memory_operations or operator in operands:
             return operator
         else:
             print("Please enter a valid operator")
 
 
-def validate_memory(value, memory, num):
-    match value:
+def validate_memory(operation, memory, num):
+    match operation:
         case "ms":
             memory = num
             print("Memory value stored! Current value: " + str(memory))
