@@ -1,18 +1,18 @@
-def calculate(num1, num2, operator):
+def calculate(num1, num2, operator, digits):
     match operator:
         case "+":
-            return num1 + num2
+            return round(num1 + num2, digits)
         case "-":
-            return num1 - num2
+            return round(num1 - num2, digits)
         case "*":
-            return num1 * num2
+            return round(num1 * num2, digits)
         case "/":
-            return num1 / num2
+            return round(num1 / num2, digits)
         case "^":
-            return num1 ** num2
+            return round(num1 ** num2, digits)
         case "root":
-            return num1 ** (1 / num2)
+            return round(num1 ** (1 / num2), digits)
         case "%":
-            return num1 % num2
+            return round(num1 % num2, digits)
         case _:
             return "Error occurred during calculation"

@@ -1,5 +1,6 @@
 from functions import history_write
 
+
 def validate(operation, memory, num):
     match operation:
         case "ms":
