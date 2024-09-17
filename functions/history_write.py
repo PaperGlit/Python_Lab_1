@@ -1,9 +1,4 @@
-def write(value):
-    with open("history.txt", "r") as history_file:
-        history = history_file.read()
-        if history == "":
-            new_history = value
-        else:
-            new_history = value + "\n" + history
-    with open("history.txt", "w") as history_file:
-        history_file.write(new_history)
+def write(num1, num2, operator, result):
+    with open("history.txt", "a") as history_file:
+        history_file.write(str(num1) + " " + operator + " " + str(num2) + " = " + str(result) + "\n")
+    print("The operation was saved into history")
