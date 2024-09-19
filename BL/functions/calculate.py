@@ -1,4 +1,7 @@
-def calculate(num1, num2, operator, digits):
+from GlobalVariables import digits
+
+
+def calculate(num1, num2, operator):
     match operator:
         case "+":
             return round(num1 + num2, digits)
@@ -15,4 +18,4 @@ def calculate(num1, num2, operator, digits):
         case "%":
             return round(num1 % num2, digits)
         case _:
-            return "Error occurred during calculation"
+            return 0.0

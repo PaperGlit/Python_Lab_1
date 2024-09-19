@@ -1,4 +1,4 @@
-from GlobalVariables import *
+from GlobalVariables import operands, memory_operations
 
 
 def validate():
